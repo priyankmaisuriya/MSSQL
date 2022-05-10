@@ -1,0 +1,65 @@
+
+=================================================QUE 1======================================================================
+1.Write a query to fetch the EmpFname from the EmployeeInfo table in the upper case and use the ALIAS name as EmpName.
+==>select UPPER(EmpFname) as EmpName from EmployeeInfo;
+
+2.Write a query to fetch the number of employees working in the department ‘HR’.
+==>select count(EmpID) from EmployeeInfo where Department='HR';
+
+3.Write a query to get the current date.
+==>select getdate();
+
+4.Write a query to retrieve the first four characters of  EmpLname from the EmployeeInfo table.
+==>select SUBSTRING(EmpLname,1,4) from EmployeeInfo;
+
+5.Write a query to fetch only the place name(string before brackets) from the Address column of EmployeeInfo table.
+==>SELECT SUBSTRING(Address, -1, CHARINDEX('(',Address)) FROM EmployeeInfo;
+
+6.Write a query to create a new table that consists of data and structure copied from the other table.
+==>select * into EmpInfo from EmployeeInfo where 1=0;
+
+7.Write q query to find all the employees whose salary is between 50000 to 100000.
+==>select * from EmployeePosition where Salary BETWEEN 50000 AND 100000
+
+8.Write a query to find the names of employees that begin with ‘S’
+==>select * from EmployeeInfo where EmpFname LIKE 's%';
+
+9.Write a query to fetch top N records.
+==>select top 2 * from EmployeePosition;
+
+10.Write a query to retrieve the EmpFname and EmpLname in a single column as “FullName”. The first name and the last name must be separated with space.
+==>select CONCAT(EmpFname,' ',EmpLname) from EmployeeInfo;
+=====================================================================================================================================================================================
+
+=======================================================QUE 2======================================================================================================================
+
+1.SQL Query to fetch records that are present in one table but not in another table.
+==>select * from EmployeeDetails left join EmployeeSalary on EmployeeSalary.EmpID=EmployeeDetails.EmpID where EmployeeSalary.EmpID is null;
+
+2.SQL query to fetch all the employees who are not working on any project.
+==>select * from EmployeeSalary WHERE Project IS NULL
+
+3.SQL query to fetch all the Employees from EmployeeDetails who joined in the Year 2020.
+==>select * from EmployeeDetails where YEAR(DateOfJoining)='2020';
+
+4.Fetch all employees from EmployeeDetails who have a salary record in EmployeeSalary.
+==>select * from EmployeeDetails A where EXISTS ( select * from EmployeeSalary B where A.EmpID=B.EmpID);
+
+5.Write an SQL query to fetch project-wise count of employees.
+==>select Project,count(EmpID) as TotalEmployee FROM EmployeeSalary GROUP BY Project;
+
+6.Fetch employee names and salary even if the salary value is not present for the employee.
+==>select EmployeeDetails.FullName,EmployeeSalary.Salary FROM EmployeeDetails inner join EmployeeSalary on EmployeeSalary.EmpID=EmployeeDetails.EmpID 
+
+7.Write an SQL query to fetch all the Employees who are also managers.
+==>SELECT A.FullName AS Manager FROM EmployeeDetails A inner join EmployeeDetails B ON A.EmpID = B.ManagerID
+
+8.Write an SQL query to fetch duplicate records from EmployeeDetails.
+==>select FullName, ManagerID, DateOfJoining, City,Count(*) from EmployeeDetails GROUP BY FullName, ManagerID, DateOfJoining, City having count(*)>1
+
+9.Write an SQL query to fetch only odd rows from the table.
+==>select A.EmpID, A.Project, A.Salary FROM (select * ,ROW_NUMBER() Over(order by EmpID) AS RowNumber from EmployeeSalary) A Where A.RowNumber %2 =1;
+
+10.Write a query to find the 3rd highest salary from a table without top or limit keyword.
+==>select Salary from EmployeeSalary A where 2 =  (select count(B.Salary) from EmployeeSalary B where  B.Salary>A.Salary)
+
